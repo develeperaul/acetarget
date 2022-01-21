@@ -146,7 +146,7 @@ export default {
   watch: {
     userInfo (newVal, oldVal) {
       console.log(newVal, oldVal, 'from watch')
-      if (!this.redirectTo) {
+      if (this.redirectTo) {
         this.redirectTo = true
         if (newVal.has_need_fired) {
           this.$router.push('/fired')
