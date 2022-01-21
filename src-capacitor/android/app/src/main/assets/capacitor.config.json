@@ -1,0 +1,7 @@
+{
+  "appId": "com.ace.target.app",
+  "appName": "Ace Target",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www"
+}
