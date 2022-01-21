@@ -5,7 +5,7 @@ import { LocalStorage, Notify } from 'quasar'
 
 axios.token = LocalStorage.getItem('token')
 // axios.defaults.baseURL = 'http://ace-target.local/'
-axios.defaults.baseURL = 'http://149.154.64.211/'
+axios.defaults.baseURL = 'https://atconnect.ru/'
 
 axios.defaults.headers['client-id'] = 1
 // axios.defaults.headers['client-secret'] = '0o2pUmazzwTOGKSy3vxI2bDV6CTMlnfUxNMzdIQB'

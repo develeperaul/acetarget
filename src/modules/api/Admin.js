@@ -15,6 +15,15 @@ class User {
     }
   }
 
+  /*
+    отправляет сообщение пользователю
+    user_ids[]: 1
+    label: default
+    title: тест
+    message: тест контент
+    photos[]: (binary)
+    docs[]: (binary)
+  */
   sendMessage = (data) => axios.post('api/v1/admin/messages/send', data, {
     headers: {
       'Content-Type': 'multipart/form-data'
@@ -33,6 +42,7 @@ class User {
     }
   })
 
+  // фото документов на трудоустройство
   showNotVerifiedRegistrations = (data) => axios.post('api/v1/admin/employment/applications', data)
   showNotVerifiedRegistrationsByFio = (data) => axios.post('api/v1/admin/employment/filter-by-fio', data)
   showNotVerifiedRegistrationsByProject = (data) => axios.post('api/v1/admin/employment/filter-by-project', data)
@@ -44,6 +54,7 @@ class User {
 
   projectList = (data) => axios.get('api/v1/admin/employees/project_list', data)
 
+  // показать сотрудников супервайзеров возможно передается страница номер
   showEmployees = (data) => axios.post('api/v1/admin/employees', data)
   showSelectedEmployees = (data) => axios.post('api/v1/admin/employees/selected', data)
   showEmployeesByProject = (data) => axios.post('api/v1/admin/employees/filter-by-project', data)
@@ -73,9 +84,23 @@ class User {
   testDelete = (data) => axios.post(`api/v1/admin/tests/test/${data.test_id}/delete`, data)
 
   downloadDoc = (data) => axios.get(`api/v1/admin/tutorials/${data.tutorialId}/download/${data.docId}`)
-
+  // сообщения за месяц
   showMonthMessage = (data) => axios.get('api/v1/admin/month-messages')
+  // удалить сообщения this.mailings[i].id
   removeMonthMessage = (data) => axios.post(`api/v1/admin/month-messages/${data.id}/remove`)
+
+  // отправляет сообщение с рассылкой на месяц
+  /*
+    параметры
+    user_ids[]: 1
+    days[]: 21
+    label: default
+    title: тест
+    message: контетн тест
+    photos[]: (binary)
+    photos[]: (binary)
+    docs[]: (binary)
+  */
   addMonthMessage = (data) => axios.post('api/v1/admin/month-messages/store', data, {
     headers: {
       'Content-Type': 'multipart/form-data'
@@ -88,7 +113,9 @@ class User {
     }
   })
 
+  // фото документов на отпуск
   showVacationRequests = () => axios.post('api/v1/admin/vacation/requests')
+
   showVacationRequestsByFio = (data) => axios.post('api/v1/admin/vacation/filter-by-fio', data)
   showVacationRequestsByProject = (data) => axios.post('api/v1/admin/vacation/filter-by-project', data)
   showVacationRequestsByFioAndProject = (data) => axios.post('api/v1/admin/vacation/filter-by-fio-and-project', data)

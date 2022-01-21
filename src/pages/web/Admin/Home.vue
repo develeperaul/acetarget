@@ -4,15 +4,6 @@
       | Главный экран
     .row.justify-center
       .col-6.q-pr-md
-        q-select.q-pb-xl(
-          :options="projects"
-          v-model="project"
-          outlined
-          color="red"
-          label="Выбрать проект"
-          behavior="menu"
-          menu-anchor="bottom left"
-        )
         q-card.q-mb-md.shadow-7(
           style="font-size: 20px"
         )
@@ -24,7 +15,7 @@
               div Проверить фото документов на трудоустройство
               .row.font-size-15
                 .q-pr-xs.text-grey Текущее кол-во сотрудников на проверку:
-                .text-red-2 123
+                .text-red-2 {{employeesLength}}
             .col-auto.items-center
               q-icon(name="mdi-chevron-right" size="24px")
         q-card.q-mb-md.shadow-7(
@@ -53,19 +44,6 @@
             .col-auto.items-center.row
               q-icon(name="mdi-chevron-right" size="24px")
       .col-6.q-pl-md
-        .row.q-pb-xl.no-wrap.justify-between
-          q-input.full-width(
-            bg-color="grey-2"
-            v-model="project"
-            outlined
-            color="red"
-            label="Введите название"
-          )
-          OriginalButton.q-ml-sm.shadow-0(
-            style="width: 50%"
-            color="red-2"
-            @click="modal.open = false"
-          ) Найти
         q-card.q-mb-md.shadow-7(
           style="font-size: 20px"
         )
@@ -91,10 +69,13 @@
 </template>
 <script>
 import OriginalButton from 'components/OriginalButton.vue'
+import Api from 'modules/api'
+const api = new Api('Admin')
 export default {
   components: { OriginalButton },
   data: () => ({
     project: null,
+    employeesLength: 0,
     projects: [
       {
         label: 'Все',
@@ -127,6 +108,19 @@ export default {
     showListOfProjects () {
       this.listOfProjectsVisibility = !this.listOfProjectsVisibility
     }
+  },
+
+  mounted () {
+    api.call('showNotVerifiedRegistrations')
+      .then(({ data }) => {
+        this.employeesLength = data.data.length
+      })
+      .catch((data) => {
+        console.log(data)
+      })
+      .finally(() => {
+        console.log('final')
+      })
   }
 }
 </script>

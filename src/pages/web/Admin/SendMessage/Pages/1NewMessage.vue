@@ -127,11 +127,12 @@ export default {
       .then(({ data }) => {
         data = data.data
         for (let i = 0; i < data.length; i++) {
+          console.log(data[i])
           this.employees.push({
             id: i,
-            last_name: data[i].last_name,
-            first_name: data[i].first_name,
-            patronymic: data[i].patronymic,
+            last_name: data[i].passport.last_name,
+            first_name: data[i].passport.first_name,
+            patronymic: data[i].passport.patronymic,
             project_name: data[i].project_name,
             territory: data[i].project_name,
             selected: false
