@@ -247,7 +247,6 @@ export default {
       .then(({ data }) => {
         data = data.data
         for (let i = 0; i < data.length; i++) {
-          console.log(data[i])
           this.employees.push({
             id: i,
             last_name: data[i].passport.last_name,
@@ -351,6 +350,12 @@ export default {
           fd.append('user_ids[]', this.employees[i].id)
         }
       }
+
+      _.each(this.selectionDaysDialog.days, (day) => {
+        if (day.selected) {
+          fd.append('days[]', day.value)
+        }
+      })
 
       fd.append('label', this.label)
 
