@@ -41,46 +41,134 @@
             q-checkbox(
               v-model="employee.selected"
             ).q-pr-md
-    q-footer.bg-white.footer-header.row.items-center(
-      bordered
-     )
-      q-toolbar.max-width.q-px-xl
-        .col-9.q-pr-md
-          input(
-            v-if="mode == 'spa'"
-            ref="uploadFile"
-            type="file"
-            accept=".doc,.docx,application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-            @change="fileSelect"
-            hidden
-          )
-          q-input(
-            v-model="label"
-            type="textarea"
-            outlined
-            label="Текст сообщения"
-            bg-color="grey-2"
-            color="red"
-            input-style="height: 110px; max-height: 110px"
-          )
-          //- q-btn.text-black(
-          //-   @click="mode == 'spa' ? $refs.uploadFile.click() : photoSelect"
-          //-   no-caps
-          //-   outline
-          //-   dense
-          //- ) Вложить документ
-        .col-3.q-pl-md
-          OriginalButton.full-width.text-black.q-mb-md(
-            @click=""
-          ) Настроить ежемесячную отправку
-          OriginalButton.full-width(
-            color="red-2"
-            v-if="true"
-            @click="sendMessage"
-          ) Отправить сообщение
-          InactiveButton(
-            v-else
-          ) Отправить сообщение
+    .bg-white.footer-header.row
+      .col-9.q-pr-md
+        //- input(
+        //-   v-if="mode == 'spa'"
+        //-   ref="uploadFile"
+        //-   type="file"
+        //-   accept=".doc,.docx,application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        //-   @change="fileSelect"
+        //-   hidden
+        //- )
+        q-input(
+          v-model="label"
+          type="textarea"
+          outlined
+          label="Текст сообщения"
+          bg-color="grey-2"
+          color="red"
+          input-style="height: 110px; max-height: 110px; padding-right: 40px"
+          class="relative"
+        )
+          q-item.item-file
+            q-item-section
+              q-item-label
+                input(
+                  ref="uploadFile"
+                  type="file"
+                  accept=".doc, .docx, application/msword, application/vnd.ms-excel, .xls, .xlsx, application/pdf, application/vnd.ms-powerpoint, .ppt, .pptx, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                  @change="() => fileSelect('doc')"
+                  hidden
+                )
+                input(
+                  v-if="mode == 'spa'"
+                  ref="uploadPhoto"
+                  type="file"
+                  accept="image/*"
+                  @change="() => fileSelect('photo')"
+                  hidden
+                )
+                .q-pt-sm.row.q-col-gutter-sm.justify-between
+                  .col-6
+                    div(
+                      @click="downloadDialog.open = true"
+                    )
+                      svg(width="22" height="22")
+                        use(xlink:href="clip.svg#clip")
+        div(v-if="docs.length != 0")
+          .q-py-md.row.q-col-gutter-sm.justify-between
+            .col-6(
+              v-for="(doc, index) in docs"
+              :key="index"
+            )
+              q-btn.q-pl-md.q-pr-sm.shadow-5.full-width(
+                no-caps
+                padding="none"
+              )
+                .row.justify-between.full-width.items-center.no-wrap
+                  .q-pr-sm.font-size-13.text-grey-5.ellipsis {{ doc.name }}
+                  div(
+                    @click="onRemoveDoc(index)"
+                    style="width: 29px"
+                  )
+                    q-icon(name="mdi-window-close" color="red-2" size="15px")
+        div(v-if="images.length != 0")
+          .q-py-md.row.q-col-gutter-sm.justify-start
+            .item-card(
+              v-for="(image, index) in images"
+              :key="index"
+            )
+              .relative-position
+                .click-photo(
+                  v-gallery
+                  :data-large="image"
+                )
+                  q-img.img-blank(
+                    :src="image"
+                  )
+                q-btn.bg-grey-4.button-remove(
+                  size="xs"
+                  flat
+                  round
+                  color="grey-5"
+                  icon="mdi-window-close"
+                  @click="onRemoveImg(index)"
+                )
+        q-dialog(
+              content-class="q-dialog-padding-fixed"
+              v-model="downloadDialog.open"
+            )
+              q-card.full-width
+                q-card-section
+                  q-item.q-px-xs
+                    q-item-section
+                      q-item-label
+                        .text-h6.text-center.text-weight-bold.q-pt-md Вложение
+                        .text-grey.q-my-md.text-center.text-body1 Выберите способ вложения
+                        q-btn.q-my-sm.full-width(
+                          @click="$refs.uploadFile.click()"
+                          no-caps
+                          outline
+                        ) Вложить документ
+                        q-btn.q-my-sm.full-width(
+                          @click="mode == 'spa' ? $refs.uploadPhoto.click() : photoSelect()"
+                          no-caps
+                          outline
+                        ) Вложить изображение
+                        q-btn.q-my-sm.full-width(
+                          @click="downloadDialog.open = false; youtubeDialog.open = true"
+                          no-caps
+                          outline
+                        ) Добавить ссылку на YouTube
+                        OriginalButton.q-mt-sm.full-width(
+                          color="red-2"
+                          @click="downloadDialog.open = false"
+                        ) Закрыть
+
+      .col-3.q-pl-md
+        OriginalButton.full-width.text-black.q-mb-md(
+          @click=""
+        ) Настроить ежемесячную отправку
+        OriginalButton.full-width(
+          color="red-2"
+          v-if="true"
+          @click="sendMessage"
+        ) Отправить сообщение
+        InactiveButton(
+          v-else
+        ) Отправить сообщение
+
       //- template(v-slot:loading)
       //-   .row.justify-center.q-my-md
       //-     q-spinner(size="3em" color="red-2")
@@ -108,6 +196,11 @@ export default {
     label: null,
     errors: {
       label: null
+    },
+    docs: [],
+    images: [],
+    downloadDialog: {
+      open: false
     },
     employees: [],
     user_ids: [],
@@ -242,12 +335,29 @@ export default {
           btn.offLoad()
         })
     },
-    async fileSelect (files, file) {
-      console.log(files, file)
-      const image = await this.fileDataURL(this.$refs.uploadFile.files[0])
+    async fileSelect (type, files, file) {
+      if (type === 'photo') {
+        console.log(files, file)
+        const image = await this.fileDataURL(this.$refs.uploadPhoto.files[0])
 
-      this.images.push(image)
+        this.images.push(image)
+      } else if (type === 'doc') {
+        console.log(this.$refs.uploadFile.files[0])
+        const docName = this.$refs.uploadFile.files[0].name
+        const docData = await this.fileDataURL(this.$refs.uploadFile.files[0])
+
+        this.docs.push({
+          name: docName,
+          data: docData
+        })
+      }
     },
+    // async fileSelect (files, file) {
+    //   console.log(files, file)
+    //   const image = await this.fileDataURL(this.$refs.uploadFile.files[0])
+
+    //   this.images.push(image)
+    // },
     async photoSelect () {
       const image = await Camera.getPhoto({
         source: CameraSource.Photos,
@@ -293,6 +403,14 @@ export default {
     //     done()
     //   }
     // }, 1000)
+    },
+    fileDataURL (file) {
+      return new Promise((resolve, reject) => {
+        const fr = new FileReader()
+        fr.onload = () => resolve(fr.result)
+        fr.onerror = reject
+        fr.readAsDataURL(file)
+      })
     }
     // handleHold (evt, indexEmployer) {
     //   this.holdActive = true
@@ -309,5 +427,35 @@ export default {
   .checkbox-border {
     border: 1px !important;
     border-radius: 5px !important;
+  }
+  .item-file {
+    position: absolute;
+    bottom: 0;
+    right: -12px;
+  }
+
+  .img-blank {
+    height: 90px;
+    width: 90px;
+    border-radius: 5px;
+  }
+  .click-photo {
+    width: 100%;
+    height: 100%;
+  }
+  .button-remove {
+    position: absolute;
+    transform: translate(-25%, -50%);
+    top: 0%;
+    right: -25%;
+    z-index: 1;
+  }
+  .item-card{
+    width: 90px;
+    height: 90px;
+
+  }
+  .item-card:not(:last-child){
+    margin-right: 13px;
   }
 </style>
