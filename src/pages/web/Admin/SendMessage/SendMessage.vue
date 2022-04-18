@@ -1,9 +1,5 @@
 <template lang="pug">
 q-page
-  //- q-btn(
-  //-   label="test"
-  //-   @click="test"
-  //- )
   .q-pb-xl.q-pt-sm.text-h4.text-weight-550
     | Сообщения
   .row.q-mb-lg
@@ -35,24 +31,30 @@ q-page
         label="Выбрать все",
         left-label
       )
-  component(:is="`admin-messages-${selectedPage}`")
+  component(:is="`admin-messages-${selectedPage}`" :project="project")
 </template>
 <script>
-import OriginalButton from 'components/OriginalButton.vue'
-import InactiveButton from 'components/InactiveButton.vue'
-import components from './Pages/index'
+import OriginalButton from "components/OriginalButton.vue";
+import InactiveButton from "components/InactiveButton.vue";
+import components from "./Pages/index";
 // import _ from 'lodash'
 // import Api from 'modules/api'
 // const api = new Api('Admin')
 
 export default {
   components: { ...components, OriginalButton, InactiveButton },
-  data () {
+  props: {
+    project: {
+      type: Object,
+      default: null
+    }
+  },
+  data() {
     return {
       selectAll: false,
       user_ids: [123, 123, 123],
       inputs: {
-        label: 'qqqqq'
+        label: "qqqqq"
         // user_id: 1
       },
       errors: {
@@ -61,58 +63,55 @@ export default {
       },
       received_all_data: null,
       thumbStyle: {
-        right: '-2px',
-        borderRadius: '10px',
-        backgroundColor: '#C22821',
-        width: '6px',
+        right: "-2px",
+        borderRadius: "10px",
+        backgroundColor: "#C22821",
+        width: "6px",
         opacity: 1
       },
       barStyle: {
-        right: '-2px',
-        borderRadius: '10px',
-        backgroundColor: '#F2F2F2',
-        width: '6px',
+        right: "-2px",
+        borderRadius: "10px",
+        backgroundColor: "#F2F2F2",
+        width: "6px",
         opacity: 1
       },
       slide: 0,
       selectedPage: 1,
-      tab: 'new_message',
+      tab: "new_message",
       tabs: [
         {
-          name: 'new_message',
-          label: 'Новое сообщение',
+          name: "new_message",
+          label: "Новое сообщение",
           data: null
-        },
+        }
         // {
         //   name: 'messages_history',
         //   label: 'История сообщений',
         //   data: null
         // },
-        {
-          name: 'mailing',
-          label: 'Рассылка',
-          data: null
-        }
+        // {
+        //   name: 'mailing',
+        //   label: 'Рассылка',
+        //   data: null
+        // }
       ]
-    }
+    };
   },
   watch: {
-    selectedPage () {
-      this.selectAll = false
+    selectedPage() {
+      this.selectAll = false;
     },
-    selectAll () {
-      this.$root.$emit('select-all', this.selectAll)
+    selectAll() {
+      this.$root.$emit("select-all", this.selectAll);
     }
   },
-  mounted () {
-  },
-  computed: {
-  },
+  mounted() {},
+  computed: {},
   methods: {
-    test () {
-    }
+    test() {}
   }
-}
+};
 </script>
 <style scoped lang="scss">
 .footer-header {

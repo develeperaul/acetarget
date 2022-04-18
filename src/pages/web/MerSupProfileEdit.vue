@@ -13,7 +13,7 @@
                 outlined
                 hide-bottom-space
                 bg-color="grey-2"
-                v-model="fullname"
+                v-model="passport.last_name"
                 label="Фамилия*"
                 color="red"
               )
@@ -27,7 +27,7 @@
                 bg-color="grey-2"
                 color="red"
                 ref="dataTarget"
-                v-model="dateOfBirth"
+                v-model="passport.birthday_at"
                 mask="##.##.####"
               )
                 template(v-slot:append)
@@ -60,7 +60,7 @@
                 outlined
                 hide-bottom-space
                 bg-color="grey-2"
-                v-model="seriesAndNumber"
+                v-model="passport.passport_id"
                 color="red"
                 mask="##-##-######"
               )
@@ -72,7 +72,7 @@
                 outlined
                 hide-bottom-space
                 bg-color="grey-2"
-                v-model="placeOfIssue"
+                v-model="passport.name_of_passport_creator"
                 color="red"
               )
       .col-6.q-pl-md
@@ -85,7 +85,7 @@
                 bg-color="grey-2"
                 outlined
                 hide-bottom-space
-                v-model="phone"
+                v-model="phone_number"
                 color="red"
                 mask="+7 (###) ###-##-##"
                 unmasked-value
@@ -109,7 +109,7 @@
                 bg-color="grey-2"
                 outlined
                 hide-bottom-space
-                v-model="email"
+                v-model="login"
                 color="red"
               )
         q-item.q-px-none
@@ -269,7 +269,7 @@
         .col-6
           .row.items-center.no-wrap.justify-end
             OriginalButton.q-mr-lg.text-black.q-px-lg(
-              @click="auth"
+              @click="$router.go(-1)"
             ) Отменить
             OriginalButton.q-px-lg(
               color="red-2"
@@ -278,6 +278,8 @@
 </template>
 <script>
 import OriginalButton from 'components/OriginalButton.vue'
+import Api from 'modules/api'
+const api = new Api('User')
 export default {
   components: { OriginalButton },
   data () {
@@ -287,14 +289,30 @@ export default {
       seriesAndNumber: '0123456789',
       placeOfIssue: 'г. Уфа, ул. Революционная, 156',
       phone: '9991234567',
-      email: 'example@google.com',
-      password: '1234567',
+      // email: 'example@google.com',
+      password: null,
+      login: null,
       isPwd: true,
       calendarDateOfBirthVisibility: false,
-      calendarDateOfIssueVisibility: false
+      calendarDateOfIssueVisibility: false,
+      passport: null,
+      phone_number: null,
+      email: null,
+      all_data: null
     }
   },
   methods: {
+    show () {
+      api.call('showInfo')
+        .then(({ data }) => {
+          data = data.data
+          this.passport = data.passport
+          this.phone_number = data.phone_number
+          this.email = data.email
+          // this.password = data.
+          this.all_data = data
+        })
+    },
     isFull (input) {
       if (input === null || input === '') {
         return false
@@ -312,8 +330,15 @@ export default {
       } else if (calendar === 'issuance') {
         this.calendarDateOfIssueVisibility = !this.calendarDateOfIssueVisibility
       }
+    },
+    auth () {
+      this.$appAlert()
     }
+  },
+  mounted () {
+    this.show()
   }
+
 }
 </script>
 <style scoped lang="scss">

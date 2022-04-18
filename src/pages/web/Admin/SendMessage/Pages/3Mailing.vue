@@ -47,7 +47,7 @@
               )
             .row.self-end.q-pb-xs
               OriginalButton.q-px-lg(
-                @click=""
+                @click="$appAlert()"
               ) Редактировать
         q-btn.bg-red-2.button-remove(
           size="sm"
@@ -55,7 +55,7 @@
           round
           color="white"
           icon="mdi-window-close"
-          @click=""
+          @click="$appAlert()"
         )
     .relative-position
       q-card.q-mb-lg(
@@ -104,7 +104,7 @@
               )
             .row.self-end.q-pb-xs
               OriginalButton.q-px-lg(
-                @click=""
+                @click="$appAlert()"
               ) Редактировать
         q-btn.bg-red-2.button-remove(
           size="sm"
@@ -112,7 +112,7 @@
           round
           color="white"
           icon="mdi-window-close"
-          @click=""
+          @click="$appAlert()"
         )
     .relative-position
       q-card.q-mb-lg(
@@ -161,7 +161,7 @@
               )
             .row.self-end.q-pb-xs
               OriginalButton.q-px-lg(
-                @click=""
+                @click="$appAlert()"
               ) Редактировать
         q-btn.bg-red-2.button-remove(
           size="sm"
@@ -169,14 +169,14 @@
           round
           color="white"
           icon="mdi-window-close"
-          @click=""
+          @click="$appAlert()"
         )
 </template>
 <script>
 import OriginalButton from 'components/OriginalButton.vue'
 import InactiveButton from 'components/InactiveButton.vue'
 export default {
-  name: 'admin-messages-3',
+  name: 'admin-messages-2',
   components: { OriginalButton, InactiveButton },
   // props: {
   //   all_data: {
@@ -207,6 +207,7 @@ export default {
     }
   }),
   mounted () {
+    this.$appAlert()
   },
   methods: {
   }

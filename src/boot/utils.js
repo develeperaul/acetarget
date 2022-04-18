@@ -23,7 +23,9 @@ Vue.component('header-link', HeaderLink)
 Vue.component('header-avatar', HeaderAvatar)
 Vue.component('header-settings', HeaderSettings)
 Vue.component('header-settings-web', HeaderSettingsWeb)
-
+Vue.prototype.$appAlert = function () {
+  alert('данный метод находится в разработке, у программистов!')
+}
 Vue.use(helpers)
 // export default {
 //   calendarLocale

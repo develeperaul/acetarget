@@ -14,8 +14,8 @@ class Api {
     this.injected = new this.Namespaces[this.namespace](fakedata)
   }
 
-  call (callable, data) {
-    return this.injected[callable](data)
+  async call (callable, data) {
+    return await this.injected[callable](data)
   }
 }
 export default Api

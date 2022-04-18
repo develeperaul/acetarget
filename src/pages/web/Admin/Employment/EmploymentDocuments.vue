@@ -2,10 +2,10 @@
   q-page
     .q-pb-lg.text-h4.text-weight-bolder
       | Документы на трудоустройство
-    q-btn(
-      label="test"
-      @click="test"
-    )
+    //- q-btn(
+    //-   label="test"
+    //-   @click="test"
+    //- )
     .text-grey.q-pb-xs
       | Сотрудников: {{employees.length}}
     q-infinite-scroll(@load="onLoad" :offset="100")
@@ -84,7 +84,7 @@ export default {
   components: { OriginalButton, InactiveButton },
   data () {
     return {
-      employees: [],
+      employees: null,
       photos_preview: [],
       images: [
         'https://picsum.photos/400/300',
@@ -169,6 +169,7 @@ export default {
       return this.employees.length
     },
     onLoad (index, done) {
+      if (this.employees !== null)done()
       // setTimeout(() => {
       //   if (this.employees) {
       //     this.employees.push({

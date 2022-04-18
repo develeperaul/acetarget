@@ -6,6 +6,9 @@
 <script>
 export default {
   name: 'App',
+  data: () => ({
+    d: '1263'
+  }),
   mounted () {
     if (this.$axios.token) {
       this.$store.dispatch('user/fetchInfo')

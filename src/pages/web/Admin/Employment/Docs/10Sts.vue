@@ -2,14 +2,14 @@
   div
     q-item.q-px-none.q-pt-none
       q-item-section
-        q-item-label
-          .text-grey.text-left.q-pb-sm.font-size-15 СТС
-          q-input(
-            outlined
-            bg-color="grey-2"
-            v-model="all_data.passport.last_name"
-            color="red"
-          )
+        //- q-item-label
+          //- .text-grey.text-left.q-pb-sm.font-size-15 СТС
+          //- q-input(
+          //-   outlined
+          //-   bg-color="grey-2"
+          //-   v-model="all_data.passport.last_name"
+          //-   color="red"
+          //- )
     //- q-item.q-px-none
     //-   q-item-section
     //-     q-item-label
@@ -156,10 +156,10 @@
     //-       )
 </template>
 <script>
-import OriginalButton from 'components/OriginalButton.vue'
-import InactiveButton from 'components/InactiveButton.vue'
+import OriginalButton from "components/OriginalButton.vue";
+import InactiveButton from "components/InactiveButton.vue";
 export default {
-  name: 'admin-register-9',
+  name: "admin-register-9",
   components: { OriginalButton, InactiveButton },
   props: {
     all_data: {
@@ -171,15 +171,15 @@ export default {
     calendarDateOfBirthVisibility: false,
     calendarDateOfIssueVisibility: false
   }),
-  mounted () {
-  },
+  mounted() {},
   methods: {
-    isFull (input) {
-      if (input === null || input === '') {
-        return false
-      } return true
+    isFull(input) {
+      if (input === null || input === "") {
+        return false;
+      }
+      return true;
     },
-    everythingIsFull () {
+    everythingIsFull() {
       // for (const item in this.modal.inputs) {
       //   if (this.modal.inputs.item === '' || this.modal.inputs.item === null) {
       //     return false
@@ -191,18 +191,18 @@ export default {
       //     return false
       //   }
       // })
-      return true
+      return true;
     },
-    toggleCalendar (calendar) {
-      if (calendar === 'birthday') {
-        this.calendarDateOfBirthVisibility = !this.calendarDateOfBirthVisibility
-      } else if (calendar === 'issuance') {
-        this.calendarDateOfIssueVisibility = !this.calendarDateOfIssueVisibility
+    toggleCalendar(calendar) {
+      if (calendar === "birthday") {
+        this.calendarDateOfBirthVisibility = !this
+          .calendarDateOfBirthVisibility;
+      } else if (calendar === "issuance") {
+        this.calendarDateOfIssueVisibility = !this
+          .calendarDateOfIssueVisibility;
       }
     }
   }
-}
+};
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>

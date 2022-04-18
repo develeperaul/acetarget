@@ -8,6 +8,7 @@
         q-btn(
           dense
           aria-label="Menu"
+          @click="$router.push({name: 'home-admin'})"
         )
           svg(width="149" height="46")
             use(xlink:href="acetarget-web.svg#logotype-web")
@@ -38,62 +39,61 @@
                     router-link(tag="span",to="/auth")
                       | Выйти
     q-page-container.q-px-lg
-      router-view.q-pt-xl
+      router-view.q-pt-xl(v-bind="{project}")
 </template>
 <script>
+import _ from "lodash";
+
+import Api from "modules/api";
+const api = new Api("Admin");
 export default {
-  data () {
+  data() {
     return {
       search: null,
       headerShown: true,
       project: null,
       projects: [
         {
-          label: 'Все',
-          value: 'Все'
-        },
-        {
-          label: 'Project 1',
-          value: 'proj-1'
-        },
-        {
-          label: 'Project 2',
-          value: 'proj-2'
-        },
-        {
-          label: 'Project 3',
-          value: 'proj-3'
-        },
-        {
-          label: 'Project 4',
-          value: 'proj-4'
-        },
-        {
-          label: 'Project 5',
-          value: 'proj-5'
+          label: "Все",
+          value: "all"
         }
       ],
       listOfProjectsVisibility: false
-    }
+    };
   },
   methods: {
-    showListOfProjects () {
-      this.listOfProjectsVisibility = !this.listOfProjectsVisibility
+    showListOfProjects() {
+      this.listOfProjectsVisibility = !this.listOfProjectsVisibility;
     }
   },
-  beforeMount () {
-    if (this.$route.name === 'auth') {
-      this.headerShown = false
+  beforeMount() {
+    if (this.$route.name === "auth") {
+      this.headerShown = false;
     } else {
-      this.headerShown = true
+      this.headerShown = true;
     }
+  },
+  mounted() {
+    api.call("showProjects").then(({ data }) => {
+      _.each(data, val => {
+        this.projects.push({
+          label: val.name,
+          value: val.id
+        });
+      });
+    });
   },
   watch: {
-    $route (to, from) {
-      if (to.name === 'auth') {
-        this.headerShown = false
+    project() {
+      this.$root.$emit("header-project", this.project);
+    },
+    $route(to, from) {
+      console.log(this.project);
+      this.$root.$emit("header-project", this.project);
+      if (to.name === "auth") {
+        this.headerShown = false;
       } else {
-        this.headerShown = true
+        this.headerShown = true;
       }
       // if (to.path.search('/territory') !== -1) {
       //   this.allowedUsePull = false
@@ -104,18 +104,18 @@ export default {
       // }
     }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
-  .max-width {
-    max-width: 1440px;
-    margin: 0 auto;
-  }
-  .wh {
-    width: 580px;
-    height: 60px;
-  }
-  .height-header {
-    height: 100px;
-  }
+.max-width {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+.wh {
+  width: 580px;
+  height: 60px;
+}
+.height-header {
+  height: 100px;
+}
 </style>

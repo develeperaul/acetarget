@@ -24,6 +24,15 @@ class User {
     photos[]: (binary)
     docs[]: (binary)
   */
+  getAnnualVacation = () => axios.get('api/v1/admin/document_templates/annual_vacation')
+  sendAnnualVacalation = (data) => axios.post('api/v1/admin/documents/annual_vacation', data, { headers: { 'Content-Type': 'multipart/form-data' } })
+
+  getAdministrativeVacalation = () => axios.get('api/v1/admin/document_templates/administrative_vacation')
+  sendAministrativeVacalation = (data) => axios.post('api/v1/admin/documents/administrative_vacation', data, { headers: { 'Content-Type': 'multipart/form-data' } })
+
+  getPeiodChange = () => axios.get('api/v1/admin/document_templates/vacation_period_change')
+  sendPeriodChange = (data) => axios.post('api/v1/admin/documents/vacation_period_change', data, { headers: { 'Content-Type': 'multipart/form-data' } })
+
   sendMessage = (data) => axios.post('api/v1/admin/messages/send', data, {
     headers: {
       'Content-Type': 'multipart/form-data'
@@ -69,11 +78,9 @@ class User {
     }
   })
 
-  saveTutorial = (data) => axios.post(`api/v1/admin/tutorial/${data.tutorial_id}/save`, data, {
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
-  })
+  saveTutorial = (data) => {
+    axios.post(`api/v1/admin/tutorial/${data.get('tutorial_id')}/save`, data, { headers: { 'Content-Type': 'multipart/form-data' } })
+  }
 
   showTutorials = (data) => axios.get(`api/v1/admin/tutorials/${data.project_id}/${data.category_id}`, data)
 

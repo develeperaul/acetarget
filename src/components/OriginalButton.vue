@@ -2,7 +2,9 @@
   q-btn.shadow-6.text-weight-550.pd(
     :class="{'full-width': mode !== 'web'}"
     no-caps
+    :outline="outline?'outline':false"
     :color="color"
+    :text-color="textColor"
     :loading="loading"
     :disabled="loading"
     @click="click()"
@@ -24,6 +26,18 @@ export default {
     color: {
       type: String,
       required: false
+    },
+    textColor: {
+      type: String,
+      required: false
+    },
+    outline: {
+      type: Boolean,
+      default: false
+    },
+    showLoad: {
+      type: Boolean,
+      default: true
     }
   },
 
@@ -45,7 +59,7 @@ export default {
       // hiding in 2s
     },
     click () {
-      if (this.$listeners.click) {
+      if (this.$listeners.click && this.showLoad) {
         this.showLoading()
       }
       this.$emit('click', this)

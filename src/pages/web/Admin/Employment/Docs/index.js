@@ -8,7 +8,7 @@ import AdminRegister7 from './7MedCard.vue'
 import AdminRegister8 from './8WorkCard.vue'
 import AdminRegister9 from './9DriverLicense.vue'
 import AdminRegister10 from './10Sts.vue'
-import AdminRegister11 from './11Vacancy.vue'
+// import AdminRegister11 from './11Vacancy.vue'
 
 export default {
   AdminRegister1,
@@ -21,5 +21,5 @@ export default {
   AdminRegister8,
   AdminRegister9,
   AdminRegister10,
-  AdminRegister11
+  // AdminRegister11
 }

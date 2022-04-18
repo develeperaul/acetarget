@@ -1,11 +1,7 @@
 <template lang="pug">
   q-page
-    //- q-btn(
-    //-   label="test"
-    //-   @click="test"
-    //- )
     .q-pb-lg.text-h4.text-weight-bolder
-      | Новый обучающий материал
+      | Обучающие материалы
     .row.q-mb-lg
       q-card.col-6(
         flat
@@ -36,21 +32,16 @@
               v-if="key < 1"
               vertical
             )
-      .col-6.justify-end.row.items-end
-        OriginalButton.q-px-lg(
-          v-if="selectedPage == 1"
-          @click="(btn) => {removeall = true; btn.offLoad()}"
-        )
-          .text-blue Удалить все
-        q-checkbox.checkbox-border.q-pr-lg(
-          v-if="selectedPage == 2"
-          v-model="selectAll"
-          label="Выбрать все"
-          left-label
-        )
+      //- .col-6.justify-end.row.items-end
+      //-   q-checkbox.checkbox-border.q-pr-lg(
+      //-     v-if="selectedPage == 2"
+      //-     v-model="selectAll"
+      //-     label="Выбрать все"
+      //-     left-label
+      //-   )
     component(
       :is="`admin-tutorial-${selectedPage}`"
-      :removeall="removeall"
+      :project="project"
     )
 </template>
 <script>
@@ -67,6 +58,10 @@ export default {
     removeall: {
       type: Boolean,
       required: false
+    },
+    project: {
+      type: Object,
+      default: null
     }
   },
   data () {
@@ -103,12 +98,12 @@ export default {
       tabs: [
         {
           name: 'adding_new',
-          label: 'Добавление нового',
+          label: 'Текущие материалы',
           data: null
         },
         {
           name: 'recipient_list',
-          label: 'Список получателей',
+          label: 'Тестирования',
           data: null
         }
       ]
@@ -117,12 +112,13 @@ export default {
   watch: {
     selectedPage () {
       this.selectAll = false
-    },
-    selectAll () {
-      this.$root.$emit('select-all', this.selectAll)
     }
+    // selectAll () {
+    //   this.$root.$emit('select-all', this.selectAll)
+    // }
   },
   mounted () {
+    this.$root.$on('header-project', (val) => { this.selectAll = val })
   },
   computed: {
   },

@@ -3,32 +3,32 @@
     .q-pb-lg.text-h4.text-weight-bolder
       | Расчетный лист
     .row.justify-center
-      .col-6.q-pr-md
-        q-list(separator)
-          q-item.no-padding(
-            v-for="(item, index) in parameters"
-            :key="index"
-            v-if="index < 14"
-          )
-            q-item-section
-              q-item-label.q-py-sm.row.justify-between.items-center.no-wrap
-                div {{ item.label }}
-                q-checkbox(
-                  v-model="item.value"
-                )
-      .col-6.q-pl-md
-        q-list(separator)
-          q-item.no-padding(
-            v-for="(item, index) in parameters"
-            :key="index"
-            v-if="index >= 14"
-          )
-            q-item-section
-              q-item-label.q-py-sm.row.justify-between.items-center.no-wrap
-                div {{ item.label }}
-                q-checkbox(
-                  v-model="item.value"
-                )
+      //- .col-6.q-pr-md
+      //-   q-list(separator)
+      //-     q-item.no-padding(
+      //-       v-for="(item, index) in parameters"
+      //-       :key="index"
+      //-       v-if="index < 14"
+      //-     )
+      //-       q-item-section
+      //-         q-item-label.q-py-sm.row.justify-between.items-center.no-wrap
+      //-           div {{ item.label }}
+      //-           q-checkbox(
+      //-             v-model="item.value"
+      //-           )
+      //- .col-6.q-pl-md
+      //-   q-list(separator)
+      //-     q-item.no-padding(
+      //-       v-for="(item, index) in parameters"
+      //-       :key="index"
+      //-       v-if="index >= 14"
+      //-     )
+      //-       q-item-section
+      //-         q-item-label.q-py-sm.row.justify-between.items-center.no-wrap
+      //-           div {{ item.label }}
+      //-           q-checkbox(
+      //-             v-model="item.value"
+      //-           )
     q-footer.bg-white.footer-header.row.items-center(
       bordered
      )
@@ -37,11 +37,11 @@
         .col-6
           .row.items-center.no-wrap.justify-end.text-no-wrap
             OriginalButton.q-mr-lg.text-black.q-px-lg(
-              @click="auth"
+              @click="$router.go(-1)"
             ) Назад
             OriginalButton.q-px-lg(
               color="red-2"
-              @click="auth"
+              @click="$appAlert()"
             ) Подтвердить изменения
 </template>
 <script>
@@ -166,6 +166,10 @@ export default {
     }
   },
   methods: {
+
+  },
+  mounted () {
+    this.$appAlert()
   }
 }
 </script>

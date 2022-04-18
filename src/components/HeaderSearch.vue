@@ -15,6 +15,7 @@ export default {
   }),
   watch: {
     search () {
+      console.log(this.$root.$emit)
       this.$root.$emit('header-search', this.search)
     }
   }
