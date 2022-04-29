@@ -82,9 +82,16 @@ const api = new Api('Admin')
 
 export default {
   components: { OriginalButton, InactiveButton },
+  props: {
+    project: {
+      type: Object,
+      default: null
+    }
+  },
   data () {
     return {
       employees: null,
+      employeesAll: null,
       photos_preview: [],
       images: [
         'https://picsum.photos/400/300',
@@ -128,12 +135,17 @@ export default {
     }
   },
   mounted () {
-    api.call('showNotVerifiedRegistrations')
-      .then(({ data }) => {
-        this.employees = data.data
+    this.showEmployees()
+  },
+  methods: {
+    showEmployees () {
+      api.call('showNotVerifiedRegistrations')
+        .then(({ data }) => {
+          console.log(data.data)
+          this.employeesAll = data.data
 
-        for (let i = 0; i < data.data.length; i++) {
-          this.photos_preview.push([
+          for (let i = 0; i < data.data.length; i++) {
+            this.photos_preview.push([
             data.data[i].passport?.photos[0],
             data.data[i].snils?.photos[0],
             data.data[i].inn?.photos[0],
@@ -141,27 +153,26 @@ export default {
             data.data[i].bank_card?.photos[0],
             data.data[i].bank_account?.photos[0],
             data.data[i].medcard?.photos[0]
-          ])
-        }
-      })
-      .catch((data) => {
-        console.log(data)
-        if (data.response) {
-          const errors = data.response.data.errors
+            ])
+          }
+        })
+        .catch((data) => {
+          console.log(data)
+          if (data.response) {
+            const errors = data.response.data.errors
 
-          _.each(errors, (messages, key) => {
-            console.log(key, this.errors[key])
-            if (this.errors[key] !== undefined) {
-              this.errors[key] = messages[0]
-            }
-          })
-        }
-      })
-      .finally(() => {
-        console.log('final')
-      })
-  },
-  methods: {
+            _.each(errors, (messages, key) => {
+              console.log(key, this.errors[key])
+              if (this.errors[key] !== undefined) {
+                this.errors[key] = messages[0]
+              }
+            })
+          }
+        })
+        .finally(() => {
+          console.log('final')
+        })
+    },
     test () {
       console.log(this.photos_preview)
     },
@@ -190,6 +201,21 @@ export default {
       //     done()
       //   }
       // }, 1000)
+    },
+    filter (id) {
+      if (!id || id === 'all') { this.employees = this.employeesAll } else {
+        this.employees = this.employeesAll.filter(item => item.project_id === id)
+      }
+    }
+  },
+  watch: {
+    project (val) {
+      console.log(this.employeesAll)
+      this.filter(val.value)
+    },
+    employeesAll (val) {
+      console.log(val)
+      this.filter(this.project?.value)
     }
   }
 }

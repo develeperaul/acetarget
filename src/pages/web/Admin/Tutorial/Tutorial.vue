@@ -3,7 +3,7 @@
     .q-pb-lg.text-h4.text-weight-bolder
       | Обучающие материалы
     .row.q-mb-lg
-      q-card.col-6(
+      q-card.col-8(
         flat
         bordered
         style="height: 55px"
@@ -29,7 +29,7 @@
               @click="selectedPage=key+1"
             )
             q-separator(
-              v-if="key < 1"
+
               vertical
             )
       //- .col-6.justify-end.row.items-end
@@ -104,6 +104,16 @@ export default {
         {
           name: 'recipient_list',
           label: 'Тестирования',
+          data: null
+        },
+        {
+          name: 'planogramma',
+          label: 'Планограмма',
+          data: null
+        },
+        {
+          name: 'notebook',
+          label: 'Тетрать мерчендайзера',
           data: null
         }
       ]

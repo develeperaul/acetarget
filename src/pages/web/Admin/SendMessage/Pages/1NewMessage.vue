@@ -219,7 +219,7 @@ div
 
         @click="$router.go(-1)"
       ) Назад
-      
+
       InactiveButton(v-else) Отправить сообщение
       q-dialog(position="bottom", v-model="selectionDaysDialog.open")
         q-swipe-to-close(v-model="selectionDaysDialog.open")
@@ -332,6 +332,7 @@ export default {
     },
     employees: [],
     user_ids: [],
+    title: null,
     message: null,
     holdActive: false,
     selectAll: false,
@@ -349,38 +350,38 @@ export default {
       this.selectAll = val;
     });
     this.filterByProject();
-    //- api
-    //-   .call("showEmployees")
-    //-   .then(({ data }) => {
-    //-     data = data.data;
-    //-     for (let i = 0; i < data.length; i++) {
-    //-       this.employees.push({
-    //-         id: i,
-    //-         last_name: data[i].passport.last_name,
-    //-         first_name: data[i].passport.first_name,
-    //-         patronymic: data[i].passport.patronymic,
-    //-         project_name: data[i].project_name,
-    //-         territory: data[i].project_name,
-    //-         selected: false
-    //-       });
-    //-     }
-    //-   })
-    //-   .catch(data => {
-    //-     console.log(data);
-    //-     if (data.response) {
-    //-       const errors = data.response.data.errors;
+    // - api
+    // -   .call("showEmployees")
+    // -   .then(({ data }) => {
+    // -     data = data.data;
+    // -     for (let i = 0; i < data.length; i++) {
+    // -       this.employees.push({
+    // -         id: i,
+    // -         last_name: data[i].passport.last_name,
+    // -         first_name: data[i].passport.first_name,
+    // -         patronymic: data[i].passport.patronymic,
+    // -         project_name: data[i].project_name,
+    // -         territory: data[i].project_name,
+    // -         selected: false
+    // -       });
+    // -     }
+    // -   })
+    // -   .catch(data => {
+    // -     console.log(data);
+    // -     if (data.response) {
+    // -       const errors = data.response.data.errors;
 
-    //-       _.each(errors, (messages, key) => {
-    //-         console.log(key, this.errors[key]);
-    //-         if (this.errors[key] !== undefined) {
-    //-           this.errors[key] = messages[0];
-    //-         }
-    //-       });
-    //-     }
-    //-   })
-    //-   .finally(() => {
-    //-     console.log("final");
-    //-   });
+    // -       _.each(errors, (messages, key) => {
+    // -         console.log(key, this.errors[key]);
+    // -         if (this.errors[key] !== undefined) {
+    // -           this.errors[key] = messages[0];
+    // -         }
+    // -       });
+    // -     }
+    // -   })
+    // -   .finally(() => {
+    // -     console.log("final");
+    // -   });
 
     for (let i = 1; i <= 31; i++) {
       this.selectionDaysDialog.days.push({
@@ -653,9 +654,7 @@ export default {
               project_id: data.data[i].project_id,
               project_name: data.data[i].project_name,
               // eslint-disable-next-line
-              selected: this.selected_employees_ids.includes(data.data[i].id)
-                ? true
-                : false
+              selected: !!this.selected_employees_ids.includes(data.data[i].id)
             });
           }
         })
@@ -709,9 +708,7 @@ export default {
               project_id: data.data[i].project_id,
               project_name: data.data[i].project_name,
               // eslint-disable-next-line
-              selected: this.selected_employees_ids.includes(data.data[i].id)
-                ? true
-                : false
+              selected: !!this.selected_employees_ids.includes(data.data[i].id)
             });
           }
         })

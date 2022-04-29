@@ -63,7 +63,7 @@
         q-item.no-padding
           q-item-section
             q-item-label.q-py-md.row.justify-between.no-wrap.items-center
-              div Памятка по начислениям
+              div Шаблон на перенос отпуска
               .row.no-wrap.text-no-wrap
                 input(
                   ref="uploadPeriodChange"
@@ -87,6 +87,31 @@
                   @click="open('popupperiod')"
                 ) Загрузить новый
       q-separator
+
+      q-card-section.q-px-xl
+        q-item.no-padding
+          q-item-section
+            q-item-label.q-py-md.row.justify-between.no-wrap.items-center
+              div Памятка по начислениям
+              .row.no-wrap.text-no-wrap
+                input(
+                  ref="payrollProcedure"
+                  type="file"
+                  accept=".doc, .docx, application/msword, application/vnd.ms-excel, .xls, .xlsx, application/pdf, application/vnd.ms-powerpoint, .ppt, .pptx, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                  @change="uploadPayrollProcedure($event)"
+                  hidden
+                )
+
+                //- OriginalButton.q-px-lg.q-mr-lg(
+                //-   :showLoad="false"
+
+                //- ) Выгрузить текущий
+                OriginalButton.q-px-lg(
+                  :showLoad="false"
+                  @click="checkPayrollProcedure"
+                ) Загрузить новый
+      q-separator
+
       q-card-section.q-px-xl
         q-item.no-padding(v-for="test in tests")
           q-item-section
@@ -232,7 +257,7 @@
           q-item
             q-item-section
               q-item-label.text-h6.text-weight-bolder
-                | Памятка по начислениям
+                | Шаблон на перенос отпуска
             q-item-section(side)
               q-btn(
                 size="sm"
@@ -284,11 +309,11 @@
 
 </template>
 <script>
-import OriginalButton from "components/OriginalButton.vue";
-import InactiveButton from "components/InactiveButton.vue";
-import _ from "lodash";
-import Api from "modules/api";
-const api = new Api("Admin");
+import OriginalButton from 'components/OriginalButton.vue'
+import InactiveButton from 'components/InactiveButton.vue'
+import _ from 'lodash'
+import Api from 'modules/api'
+const api = new Api('Admin')
 export default {
   components: { OriginalButton, InactiveButton },
   props: {
@@ -297,7 +322,7 @@ export default {
       default: null
     }
   },
-  data() {
+  data () {
     return {
       firstName: null,
       lastName: null,
@@ -305,339 +330,379 @@ export default {
       popupannual: false,
       popupadministrative: false,
       popupperiod: false,
+      popuppayrollprocedure: false,
       annualFile: null,
+      payrollProcedureFile: null,
       administrativeFile: null,
       periodFile: null,
       tests: null,
       parameter: [],
       parameters: [
         {
-          label: "Оклад по часам",
+          label: 'Оклад по часам',
           value: false
         },
         {
-          label: "Оклад по часам с НДФЛ",
+          label: 'Оклад по часам с НДФЛ',
           value: false
         },
         {
-          label: "Бонус",
+          label: 'Бонус',
           value: false
         },
         {
-          label: "Бонус с НДФЛ",
+          label: 'Бонус с НДФЛ',
           value: false
         },
         {
-          label: "Начисление отпуска",
+          label: 'Начисление отпуска',
           value: false
         },
         {
-          label: "Начисление отпуска с НДФЛ",
+          label: 'Начисление отпуска с НДФЛ',
           value: false
         },
         {
-          label: "Больничный за счет работодателя",
+          label: 'Больничный за счет работодателя',
           value: false
         },
         {
-          label: "Больничный за счет работодателя с НДФЛ",
+          label: 'Больничный за счет работодателя с НДФЛ',
           value: false
         },
         {
-          label: "Больничный за счет ФСС",
+          label: 'Больничный за счет ФСС',
           value: false
         },
         {
-          label: "Больничный за счет ФСС с НДФЛ",
+          label: 'Больничный за счет ФСС с НДФЛ',
           value: false
         },
         {
-          label: "Мобильная связь",
+          label: 'Мобильная связь',
           value: false
         },
         {
-          label: "Мобильная связь с НДФЛ",
+          label: 'Мобильная связь с НДФЛ',
           value: false
         },
         {
-          label: "ГСМ",
+          label: 'ГСМ',
           value: false
         },
         {
-          label: "ГСМ с НДФЛ",
+          label: 'ГСМ с НДФЛ',
           value: false
         },
         {
-          label: "Прочие доплаты",
+          label: 'Прочие доплаты',
           value: false
         },
         {
-          label: "Прочие доплаты с НДФЛ",
+          label: 'Прочие доплаты с НДФЛ',
           value: false
         },
         {
-          label: "Комментарий к доплате",
+          label: 'Комментарий к доплате',
           value: false
         },
         {
-          label: "Оплата проезда",
+          label: 'Оплата проезда',
           value: false
         },
         {
-          label: "Оплата проезда с НДФЛ",
+          label: 'Оплата проезда с НДФЛ',
           value: false
         },
         {
-          label: "Районный коэффициент %",
+          label: 'Районный коэффициент %',
           value: false
         },
         {
-          label: "Районный коэффициент сумма",
+          label: 'Районный коэффициент сумма',
           value: false
         },
         {
-          label: "Районный коэффициент сумма с НДФЛ",
+          label: 'Районный коэффициент сумма с НДФЛ',
           value: false
         },
         {
-          label: "Северная надбавка %",
+          label: 'Северная надбавка %',
           value: false
         },
         {
-          label: "Северная надбавка сумма",
+          label: 'Северная надбавка сумма',
           value: false
         },
         {
-          label: "Северная надбавка сумма с НДФЛ",
+          label: 'Северная надбавка сумма с НДФЛ',
           value: false
         },
         {
-          label: "НДФЛ удержанный",
+          label: 'НДФЛ удержанный',
           value: false
         },
         {
-          label: "НДФЛ с вычета",
+          label: 'НДФЛ с вычета',
           value: false
         }
       ]
-    };
+    }
   },
   methods: {
-    deleteTest(id, btn) {
+    deleteTest (id, btn) {
       api
-        .call("testDelete", {
+        .call('testDelete', {
           test_id: id
         })
         .then(({ data }) => {
-          this.showTests();
+          this.showTests()
         })
-        .finally(() => btn.offLoad());
+        .finally(() => btn.offLoad())
     },
-    showTests() {
+    showTests () {
       // console.log(this.project)
       this.$nextTick(() => {
-        const project = this.project;
+        const project = this.project
         api
-          .call("showProjectsTest", {
+          .call('showProjectsTest', {
             project_id: project.value
           })
           .then(({ data }) => {
-            this.tests = data;
-          });
-      });
+            this.tests = data
+          })
+      })
     },
-    download(name, btn) {
-      const fd = new FormData();
+    download (name, btn) {
+      const fd = new FormData()
       fd.append(
-        "fullName",
+        'fullName',
         `${this.firstName}${this.lastName}${this.patronymic}`
-      );
-      fd.append("projectId", this.project.value);
-      fd.append("file", this.$axios.dataURLtoBlob(this[`${name}File`]));
+      )
+      fd.append('projectId', this.project.value)
+      fd.append('file', this.$axios.dataURLtoBlob(this[`${name}File`]))
       const nameFetch =
-        name === "annual"
-          ? "sendAnnualVacalation"
-          : name === "administrative"
-          ? "sendAministrativeVacalation"
-          : "sendPeriodChange";
+        name === 'annual'
+          ? 'sendAnnualVacalation'
+          : name === 'administrative'
+            ? 'sendAministrativeVacalation'
+            : 'sendPeriodChange'
       api
         .call(nameFetch, fd)
         .then(({ data }) => {
-          this.firstName = null;
-          this.lastName = null;
-          this.patronymic = null;
-          this[`${name}File`] = null;
-          this[`popup${name}`] = null;
-          this.$q.notify("Файл загружен");
+          this.firstName = null
+          this.lastName = null
+          this.patronymic = null
+          this[`${name}File`] = null
+          this[`popup${name}`] = null
+          this.$q.notify('Файл загружен')
         })
         .catch(data => {
-          this.$q.notify("Ошибка в загрузке файла");
-          this.firstName = null;
-          this.lastName = null;
-          this.patronymic = null;
-          this[`${name}File`] = null;
-          this[`popup${name}`] = null;
+          this.$q.notify('Ошибка в загрузке файла')
+          this.firstName = null
+          this.lastName = null
+          this.patronymic = null
+          this[`${name}File`] = null
+          this[`popup${name}`] = null
           if (data.response) {
-            const errors = data.response.data.errors;
+            const errors = data.response.data.errors
 
             _.each(errors, (messages, key) => {
-              console.log(key, this.errors[key]);
+              console.log(key, this.errors[key])
               if (this.errors[key] !== undefined) {
-                this.errors[key] = messages[0];
+                this.errors[key] = messages[0]
               }
-            });
+            })
           }
         })
-        .finally(() => btn.offLoad());
+        .finally(() => btn.offLoad())
     },
-    open(name) {
-      if (this.project && this.project.value !== "all") this[name] = true;
-      else this.$q.notify("Выберите проект");
+    open (name) {
+      if (this.project && this.project.value !== 'all') this[name] = true
+      else this.$q.notify('Выберите проект')
     },
-    fileDataURL(file) {
+    fileDataURL (file) {
       return new Promise((resolve, reject) => {
-        const fr = new FileReader();
-        fr.onload = () => resolve(fr.result);
-        fr.onerror = reject;
-        fr.readAsDataURL(file);
-      });
+        const fr = new FileReader()
+        fr.onload = () => resolve(fr.result)
+        fr.onerror = reject
+        fr.readAsDataURL(file)
+      })
     },
-    auth() {
-      this.$appAlert();
+    auth () {
+      this.$appAlert()
     },
-    async getAnnualVacation() {
+    async getAnnualVacation () {
       api
-        .call("getAnnualVacation")
+        .call('getAnnualVacation')
         .then(({ data }) => {
-          this.$q.notify("Файл загужен");
+          this.$q.notify('Файл загужен')
         })
         .catch(data => {
-          console.log(data);
+          console.log(data)
           if (data.response) {
-            const errors = data.response.data.errors;
+            const errors = data.response.data.errors
 
             _.each(errors, (messages, key) => {
-              console.log(key, this.errors[key]);
+              console.log(key, this.errors[key])
               if (this.errors[key] !== undefined) {
-                this.errors[key] = messages[0];
+                this.errors[key] = messages[0]
               }
-            });
-          }
-        });
-    },
-    async upload(name, ref) {
-      this[`${name}File`] = await this.fileDataURL(this.$refs[ref].files[0]);
-    },
-    getAdministrativeVacalation(btn) {
-      const fd = new FormData();
-      api
-        .call("getAdministrativeVacalation", fd)
-        .then(({ data }) => {
-          this.$q.notify("Сообщение отправлено");
-          this.$router.push("/home/admin");
-        })
-        .catch(data => {
-          console.log(data);
-          if (data.response) {
-            const errors = data.response.data.errors;
-
-            _.each(errors, (messages, key) => {
-              console.log(key, this.errors[key]);
-              if (this.errors[key] !== undefined) {
-                this.errors[key] = messages[0];
-              }
-            });
+            })
           }
         })
-        .finally(() => {
-          btn.offLoad();
-        });
     },
-    sendAministrativeVacalation(btn) {
-      const fd = new FormData();
+    async upload (name, ref) {
+      this[`${name}File`] = this.$refs[ref].files[0]
+    },
+    getAdministrativeVacalation (btn) {
+      const fd = new FormData()
       api
-        .call("sendAministrativeVacalation", fd)
+        .call('getAdministrativeVacalation', fd)
         .then(({ data }) => {
-          this.$q.notify("Сообщение отправлено");
-          this.$router.push("/home/admin");
+          this.$q.notify('Сообщение отправлено')
+          this.$router.push('/home/admin')
         })
         .catch(data => {
-          console.log(data);
+          console.log(data)
           if (data.response) {
-            const errors = data.response.data.errors;
+            const errors = data.response.data.errors
 
             _.each(errors, (messages, key) => {
-              console.log(key, this.errors[key]);
+              console.log(key, this.errors[key])
               if (this.errors[key] !== undefined) {
-                this.errors[key] = messages[0];
+                this.errors[key] = messages[0]
               }
-            });
+            })
           }
         })
         .finally(() => {
-          btn.offLoad();
-        });
+          btn.offLoad()
+        })
     },
-    getPeiodChange(btn) {
-      const fd = new FormData();
+    sendAministrativeVacalation (btn) {
+      const fd = new FormData()
       api
-        .call("getPeiodChange", fd)
+        .call('sendAministrativeVacalation', fd)
         .then(({ data }) => {
-          this.$q.notify("Сообщение отправлено");
-          this.$router.push("/home/admin");
+          this.$q.notify('Сообщение отправлено')
+          this.$router.push('/home/admin')
         })
         .catch(data => {
-          console.log(data);
+          console.log(data)
           if (data.response) {
-            const errors = data.response.data.errors;
+            const errors = data.response.data.errors
 
             _.each(errors, (messages, key) => {
-              console.log(key, this.errors[key]);
+              console.log(key, this.errors[key])
               if (this.errors[key] !== undefined) {
-                this.errors[key] = messages[0];
+                this.errors[key] = messages[0]
               }
-            });
+            })
           }
         })
         .finally(() => {
-          btn.offLoad();
-        });
+          btn.offLoad()
+        })
     },
-    sendPeriodChange(btn) {
-      const fd = new FormData();
+    getPeiodChange (btn) {
+      const fd = new FormData()
       api
-        .call("sendPeriodChange", fd)
+        .call('getPeiodChange', fd)
         .then(({ data }) => {
-          this.$q.notify("Сообщение отправлено");
-          this.$router.push("/home/admin");
+          this.$q.notify('Сообщение отправлено')
+          this.$router.push('/home/admin')
         })
         .catch(data => {
-          console.log(data);
+          console.log(data)
           if (data.response) {
-            const errors = data.response.data.errors;
+            const errors = data.response.data.errors
 
             _.each(errors, (messages, key) => {
-              console.log(key, this.errors[key]);
+              console.log(key, this.errors[key])
               if (this.errors[key] !== undefined) {
-                this.errors[key] = messages[0];
+                this.errors[key] = messages[0]
               }
-            });
+            })
           }
         })
         .finally(() => {
-          btn.offLoad();
-        });
+          btn.offLoad()
+        })
+    },
+    sendPeriodChange (btn) {
+      const fd = new FormData()
+      api
+        .call('sendPeriodChange', fd)
+        .then(({ data }) => {
+          this.$q.notify('Сообщение отправлено')
+          this.$router.push('/home/admin')
+        })
+        .catch(data => {
+          console.log(data)
+          if (data.response) {
+            const errors = data.response.data.errors
+
+            _.each(errors, (messages, key) => {
+              console.log(key, this.errors[key])
+              if (this.errors[key] !== undefined) {
+                this.errors[key] = messages[0]
+              }
+            })
+          }
+        })
+        .finally(() => {
+          btn.offLoad()
+        })
+    },
+    async checkPayrollProcedure () {
+      if (this.project && this.project.value !== 'all') {
+        this.$refs.payrollProcedure.click()
+      } else this.$q.notify('Выберите проект')
+    },
+    uploadPayrollProcedure (e) {
+      console.log(e)
+      const fd = new FormData()
+      fd.append('file', e.target.files[0])
+      for (var pair of fd.entries()) {
+        console.log(pair[0] + ', ' + pair[1])
+      }
+      console.log(fd)
+      api
+        .call('createPayrollProcedure', {
+          project: this.project.value,
+          data: fd
+        })
+        .then(() => {
+          this.$q.notify('Файл загружен')
+        })
+        .catch(data => {
+          console.log(data)
+          if (data.response) {
+            const errors = data.response.data.errors
+
+            _.each(errors, (messages, key) => {
+              console.log(key, this.errors[key])
+              if (this.errors[key] !== undefined) {
+                this.errors[key] = messages[0]
+              }
+            })
+          }
+        })
+        .finally(() => {
+          // - btn.offLoad();
+        })
     }
   },
-  mounted() {
-    if (this.project) this.showTests();
+  mounted () {
+    if (this.project) this.showTests()
   },
   watch: {
-    project() {
-      this.showTests();
+    project () {
+      this.showTests()
     }
   }
-};
+}
 </script>
 <style scoped lang="scss">
 .border-radius-10 {

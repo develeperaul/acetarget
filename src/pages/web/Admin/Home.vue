@@ -68,9 +68,9 @@
               q-icon(name="mdi-chevron-right" size="24px")
 </template>
 <script>
-import OriginalButton from "components/OriginalButton.vue";
-import Api from "modules/api";
-const api = new Api("Admin");
+import OriginalButton from 'components/OriginalButton.vue'
+import Api from 'modules/api'
+const api = new Api('Admin')
 export default {
   components: { OriginalButton },
   data: () => ({
@@ -79,64 +79,64 @@ export default {
     employeesVactionLength: 0,
     projects: [
       {
-        label: "Все",
-        value: "Все"
+        label: 'Все',
+        value: 'Все'
       },
       {
-        label: "Project 1",
-        value: "proj-1"
+        label: 'Project 1',
+        value: 'proj-1'
       },
       {
-        label: "Project 2",
-        value: "proj-2"
+        label: 'Project 2',
+        value: 'proj-2'
       },
       {
-        label: "Project 3",
-        value: "proj-3"
+        label: 'Project 3',
+        value: 'proj-3'
       },
       {
-        label: "Project 4",
-        value: "proj-4"
+        label: 'Project 4',
+        value: 'proj-4'
       },
       {
-        label: "Project 5",
-        value: "proj-5"
+        label: 'Project 5',
+        value: 'proj-5'
       }
     ],
     listOfProjectsVisibility: false
   }),
   methods: {
-    showListOfProjects() {
-      this.listOfProjectsVisibility = !this.listOfProjectsVisibility;
+    showListOfProjects () {
+      this.listOfProjectsVisibility = !this.listOfProjectsVisibility
     }
   },
 
-  mounted() {
+  mounted () {
     api
-      .call("showNotVerifiedRegistrations")
+      .call('showNotVerifiedRegistrations')
       .then(({ data }) => {
-        this.employeesLength = data.data.length;
+        this.employeesLength = data.data.length
       })
       .catch(data => {
-        console.log(data);
+        console.log(data)
       })
       .finally(() => {
-        console.log("final");
-      });
+        console.log('final')
+      })
 
     api
-      .call("showVacationRequests")
+      .call('showVacationRequests')
       .then(({ data }) => {
-        this.employeesVactionLength = data.data.length;
+        this.employeesVactionLength = data.data.length
       })
       .catch(data => {
-        console.log(data);
+        console.log(data)
       })
       .finally(() => {
         // console.log(this.employees)
-      });
+      })
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .height-section {

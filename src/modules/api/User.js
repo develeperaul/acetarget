@@ -16,6 +16,9 @@ class User {
     // }
   }
 
+  getPayrollProcedure = (project) => axios.get(`api/v1/user/projects/${project}/documents/payroll_procedure`)
+  getPlanogram = (project) => axios.get(`api/v1/user/projects/${project}/documents/planogram`)
+  getMerchandiserNotebook = (project) => axios.get(`api/v1/user/projects/${project}/documents/merchandiser_notebook`)
   showInfo = (data) => axios.get('api/v1/user/me', data)
 
   requestCert = (data) => axios.post('api/v1/user/sheet/request', data, {

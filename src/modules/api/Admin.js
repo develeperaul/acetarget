@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-class User {
+class Admin {
   constructor (hasFake) {
     this.fake = hasFake
   }
@@ -14,6 +14,20 @@ class User {
       )
     }
   }
+
+  // 1. Памятка о порядке начисления заработной платы
+
+createPayrollProcedure = ({ project, data }) => {
+  axios.post(`api/v1/admin/projects/${project}/documents/payroll_procedure`, data)
+}
+
+// 2. Планограмма
+
+createPlanogram = ({ project, data }) => axios.post(`api/v1/admin/projects/${project}/documents/planogram`, data)
+
+// 3. Тетрадь мерчендайзера
+
+createMerchandiserNotebook = ({ project, data }) => axios.post(`api/v1/admin/projects/${project}/documents/merchandiser_notebook`, data)
 
   /*
     отправляет сообщение пользователю
@@ -133,4 +147,4 @@ class User {
 
   downloadVacationScan = (data) => axios.get(`api/v1/admin/vacation/${data.blank_id}/download/${data.scan_id}`)
 }
-export default User
+export default Admin
